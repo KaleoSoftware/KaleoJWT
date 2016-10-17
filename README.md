@@ -38,6 +38,11 @@ var token = KaleoJWT.sign(data, 'secret');
 `npm install`
 `npm run build`
 
+## Test Harness
+
+Open this web page to test the lib in the Browser
+
+`open harness.html`
 
 ### Acknowledgements
 

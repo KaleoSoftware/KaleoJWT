@@ -49,11 +49,24 @@
     <script src="dist/KaleoJWT.min.js"></script>
 
     <script>
+      var log = {
+        info: function(msg){
+          $("#errors").append("<div class='alert alert-info'>"+msg+"</div>");
+        },
+        error: function(msg){
+          $("#errors").append("<div class='alert alert-danger'>"+msg+"</div>");
+        }
+      };
+
       $(document).ready(function() {
         $("#encode").click(function() {
           var secret = $("#secret").val();
           var data = $("#data").val();
-          data = JSON.parse(data);
+          try {
+            data = JSON.parse(data);
+          } catch(e) {
+            log.error("Error parsing data, must be JSON format (string keys)");
+          }
           var token = KaleoJWT.sign(data, secret);
           $("#token").val(token);
         });
@@ -65,13 +78,22 @@
           if (isValid) {
             $("#data").val(KaleoJWT.decode(token));
           } else {
-            $("#errors").append("<div class='alert alert-danger'>Invalid Signature!</div>");
+            log.error("Invalid Signature!");
           }
         });
+
+        // Self-test
+        var data1 = {email: "ns@thenorth.com",firstname: "Ned", lastname: "Stark", exp: 1476749575};
+        var token1 = KaleoJWT.sign(data1, 'got');
+        var testVector1 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5zQHRoZW5vcnRoLmNvbSIsImZpcnN0bmFtZSI6Ik5lZCIsImxhc3RuYW1lIjoiU3RhcmsiLCJleHAiOjE0NzY3NDk1NzV9.PNV5aUv6kMRa0eN-wQAk9bozs_hdv8s67rqT-8qMdXs";
+        if (token1 === testVector1) {
+          log.info("Self test passed");
+        } else {
+          log.error("Self test failed!");
+        }
+
       })
     </script>
-
-
 
   </body>
 </html>
