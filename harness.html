@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>KaleoJWT Test Harness</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Kaleo JWT Test Harness</h4>
+        </div>
+        <div class="card-block">
+          <h6 class="card-subtitle text-muted"></h6>
+          <p class="card-text">Encode/Decode a HMAC-SHA256 JWT Token using Kaleo's All-In-One KaleoJWT code.</p>
+          <div class="form-group row">
+            <label for="secret" class="col-xs-2 col-form-label">Secret</label>
+            <div class="col-xs-10">
+              <input class="form-control" type="text" value="secret" id="secret">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="token" class="col-xs-2 col-form-label">Token</label>
+            <div class="col-xs-10">
+              <input class="form-control" type="text" value="" id="token">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="data" class="col-xs-2 col-form-label">Data</label>
+            <div class="col-xs-10">
+              <textarea class="form-control" id="data" rows="3">{"email": "x@x.com"}</textarea>
+            </div>
+          </div>
+          <p id="errors" class="card-text">
+          </p>
+          <button id="encode" type="button" class="btn btn-info btn-lg btn-block">Encode</button>
+          <button id="decode" type="button" class="btn btn-info btn-lg btn-block">Decode</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js"></script>
+
+    <script src="dist/KaleoJWT.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $("#encode").click(function() {
+          var secret = $("#secret").val();
+          var data = $("#data").val();
+          data = JSON.parse(data);
+          var token = KaleoJWT.sign(data, secret);
+          $("#token").val(token);
+        });
+
+        $("#decode").click(function() {
+          var secret = $("#secret").val();
+          var token = $("#token").val();
+          var isValid = KaleoJWT.verify(token, secret);
+          if (isValid) {
+            $("#data").val(KaleoJWT.decode(token));
+          } else {
+            $("#errors").append("<div class='alert alert-danger'>Invalid Signature!</div>");
+          }
+        });
+      })
+    </script>
+
+
+
+  </body>
+</html>

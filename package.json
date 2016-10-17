@@ -1,0 +1,23 @@
+{
+  "name": "KaleoJWT",
+  "description": "",
+  "version": "1.0.0",
+  "repository": "KaleoSoftware/KaleoJWT",
+  "author": "Kaleo Software",
+  "engines": {
+    "node": "*",
+    "browser": "*"
+  },
+  "main": "KaleoJWT",
+  "directories": {},
+  "scripts": {
+    "clean": "rm -r dist/*",
+    "browserify": "browserify src/index.js -d --s KaleoJWT > dist/KaleoJWT.js",
+    "uglify": "uglifyjs dist/KaleoJWT.js --compress --mangle > dist/KaleoJWT.min.js",
+    "build": "npm run clean && npm run browserify && npm run uglify"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "uglify-js": "latest"
+  }
+}

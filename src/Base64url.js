@@ -1,0 +1,1 @@
+module.exports={encode:function(s){s=s.replace(/=+$/,'');s=s.replace(/\+/g,'-');s=s.replace(/\//g,'_');return s;},decode:function(s){s=(s+'===').slice(0,s.length+(s.length % 4));s.replace(/-/g,'+').replace(/_/g,'/');return s;}};
